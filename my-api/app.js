@@ -1,10 +1,16 @@
 // app.js
    const express = require('express');
+   const cors = require('cors');
    const swaggerUi = require('swagger-ui-express');
    const swaggerJSDoc = require('swagger-jsdoc');
 
-   const app = express();
-   const port = 3000;
+    const app = express();
+    app.use(cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    }));
+    const port = 3000;
 
    // Swagger definition
    const swaggerOptions = {
@@ -17,7 +23,7 @@
            },
            servers: [
                {
-                   url: `https://supreme-sniffle-g5x5g7g6p6w2p7wg-3000.app.github.dev/api`,
+                   url: `https://jubilant-space-goldfish-x5q6rj7xjjpwc9q6r-3000.app.github.dev/api`,
                },
            ],
       components: {
@@ -34,7 +40,7 @@
    };
    // Middleware per il parsing JSON
    app.use(express.json());
-   app.use('/webApp',express.static('public'))
+   app.use('/',express.static('public'))
    const swaggerDocs = swaggerJSDoc(swaggerOptions);
    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 

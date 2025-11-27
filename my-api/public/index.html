@@ -1,1 +1,259 @@
-WEB application page
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Ultima API</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Bootstrap CSS v5.2.1 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+  <style>
+    body {
+      background-color: #212121;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      /* 0.5 = trasparenza */
+      z-index: 1;
+      /* sopra l'immagine */
+    }
+
+    header {
+      position: relative;
+      height: 350px;
+      background-image: url(Imgs/sfondo_API.jpg);
+      background-size: cover;
+      /* equivalente a object-fit: cover */
+      background-position: center;
+      /* equivalente a object-position: center */
+      background-repeat: no-repeat;
+
+      & .header-center {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+      }
+    }
+
+    header * {
+      z-index: 3;
+      /* sopra l'overlay */
+    }
+
+    .accent {
+      background-color: rgb(0, 89, 206);
+      border-radius: 5px;
+      padding: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar" data-bs-theme="dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img src="Imgs/logo bianco azzurro.png" alt="Logo" width="120" />
+        </a>
+        <div class="navbar-nav ms-auto d-flex flex-row gap-3">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <button class="nav-link accent text-white" id="aggiungiUtente">
+            Aggiungi utente
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div
+      class="header-center d-flex flex-column justify-content-center align-items-center text-center text-white h-100">
+      <h1>ULTIMO PROGETTO API</h1>
+      <p>Ballushi Erion, Gamba Daniele, Lavelli Tommaso, Suru Andrea e Ousmane JR17</p>
+    </div>
+  </header>
+  <main>
+    <template id="user-card-template">
+      <div class="col-12 col-md-3 d-flex justify-content-center">
+        <div class="card" aria-hidden="true" style="width: 18rem">
+          <img src="Imgs/noImg.jpg" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title placeholder-glow">
+              <span class="placeholder col-12"></span>
+            </h5>
+            <p class="card-text"></p>
+            <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"></a>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <div class="container">
+      <h1 class="text-center text-white mt-5">
+        Ecco gli utenti presenti fino ad ora:
+      </h1>
+      <div class="row my-5 gap-3 gap-md-0" id="utenti"></div>
+
+      <!--MODAL-->
+      <div class="modal fade" id="utente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="nomeUtente"></h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" onclick="">Modifica utente</button>
+              <button type="button" class="btn btn-danger" onclick="">Elimina utente</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <nav aria-label="..." data-bs-theme="dark">
+          <ul class="pagination">
+
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="aggiungiUtenteModal" tabindex="-1" aria-labelledby="aggiungiUtenteModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="aggiungiUtenteModalLabel">Aggiungi Nuovo Utente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formAggiungiUtente">
+              <div class="mb-3">
+                <label for="username" class="form-label">Username *</label>
+                <input type="text" class="form-control" id="username" required>
+                <div class="invalid-feedback">
+                  Inserisci un username valido.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="eta" class="form-label">Età *</label>
+                <input type="number" class="form-control" id="eta" min="1" required>
+                <div class="invalid-feedback">
+                  Inserisci un'età valida.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email">
+              </div>
+              <div class="mb-3">
+                <label for="telefono" class="form-label">Telefono</label>
+                <input type="tel" class="form-control" id="telefono">
+              </div>
+              <div class="mb-3">
+                <label for="immagine" class="form-label">Immagine</label>
+                <input type="text" class="form-control" id="immagine">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+            <button type="button" class="btn btn-primary" id="btnSalvaUtente">Salva Utente</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="modificaUtenteModal" tabindex="-1" aria-labelledby="aggiungiUtenteModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="aggiungiUtenteModalLabel">Aggiungi Nuovo Utente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formModificaUtente">
+              <div class="mb-3">
+                <label for="username" class="form-label">Username *</label>
+                <input type="text" class="form-control" id="m-username" required>
+                <div class="invalid-feedback">
+                  Inserisci un username valido.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="eta" class="form-label">Età *</label>
+                <input type="number" class="form-control" id="m-eta" min="1" required>
+                <div class="invalid-feedback">
+                  Inserisci un'età valida.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="m-email">
+              </div>
+              <div class="mb-3">
+                <label for="telefono" class="form-label">Telefono</label>
+                <input type="tel" class="form-control" id="m-telefono">
+              </div>
+              <div class="mb-3">
+                <label for="immagine" class="form-label">Immagine</label>
+                <input type="text" class="form-control" id="m-immagine">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+            <button type="button" class="btn btn-primary" id="btnSalvaModifica">Salva Modifica</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const template = document.getElementById("user-card-template");
+    const container = document.getElementById("utenti");
+
+    // Genero 4 card
+    for (let i = 0; i < 4; i++) {
+      const clone = template.content.cloneNode(true);
+      const card = clone.querySelector(".col-12");
+      card.dataset.placeholder = "true";
+      container.appendChild(clone);
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+    crossorigin="anonymous"></script>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
